@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Page Not Found - FitApply{% endblock %}
+
+{% block content %}
+<div class="empty-state" style="padding: 80px 20px;">
+    <div class="empty-state-icon">404</div>
+    <h3 style="font-size: 1.8rem;">Page Not Found</h3>
+    <p>Sorry, the page you're looking for doesn't exist or has been moved.</p>
+    <div style="margin-top: 24px;">
+        <a href="{{ url_for('index') }}" class="btn">Go Home</a>
+        <a href="{{ url_for('jobs') }}" class="btn outline">Browse Jobs</a>
+    </div>
+</div>
+{% endblock %}

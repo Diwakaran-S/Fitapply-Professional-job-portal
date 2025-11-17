@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}{{ job.title }} - FitApply{% endblock %}
+
+{% block content %}
+<div class="job-detail">
+    <!-- Job Header -->
+    <div class="job-header">
+        <img src="{{ job.get('image', 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400') }}" alt="{{ job.title }}" class="job-header-image">
+        <div class="job-header-content">
+            <h1>{{ job.title }}</h1>
+            <div class="company">{{ job.company }}</div>
+            <p style="color: #6b7280; margin-bottom: 20px;">{{ job.description }}</p>
+            <div class="job-meta">
+                <div class="meta-item">
+                    <strong>📍 Location:</strong><br>{{ job.location }}
+                </div>
+                <div class="meta-item">
+                    <strong>💰 Salary:</strong><br>{{ job.salary }}
+                </div>
+                <div class="meta-item">
+                    <strong>🏷️ Category:</strong><br>{{ job.category }}
+                </div>
+                <div class="meta-item">
+                    <strong>📅 Posted:</strong><br>{{ job.posted_at.strftime('%d %b %Y') }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Job Content -->
+    <div class="job-content">
+        <h2>About This Role</h2>
+        <p>{{ job.description }}</p>
+
+        <h2>Key Requirements</h2>
+        <ul>
+            {% for req in job.requirements %}
+                <li>{{ req }}</li>
+            {% endfor %}
+        </ul>
+
+        <h2>What We Offer</h2>
+        <ul>
+            <li>Competitive salary and comprehensive benefits package</li>
+            <li>Professional development and training opportunities</li>
+            <li>Flexible working arrangements and remote options</li>
+            <li>Collaborative team environment with talented professionals</li>
+            <li>Growth opportunities and career advancement paths</li>
+        </ul>
+    </div>
+
+    <!-- Apply Section -->
+    <div class="apply-section">
+        {% if 'user_id' not in session %}
+            <h2>Ready to Apply?</h2>
+            <p>Sign in to your account or create one to apply for this position.</p>
+            <div style="display: flex; gap: 12px; justify-content: center; margin-top: 20px;">
+                <a href="{{ url_for('login') }}" class="btn" style="background: white; color: #06b6d4;">Sign In</a>
+                <a href="{{ url_for('signup') }}" class="btn" style="background: white; color: #06b6d4;">Create Account</a>
+            </div>
+        {% elif user_applied %}
+            <h2> You've Already Applied</h2>
+            <p>Thank you for your application! We'll review your profile and get back to you soon.</p>
+        {% else %}
+            <h2>Ready to Apply?</h2>
+            <p>Submit your application below. You can add a cover letter to make your application stand out.</p>
+            <form method="POST" action="{{ url_for('apply_job', job_id=job._id) }}" style="max-width: 600px; margin: 20px auto; text-align: center;">
+                <div class="form-group" style="text-align: left;">
+                    <label for="cover_letter" style="color: white;">Cover Letter (Optional)</label>
+                    <textarea name="cover_letter" id="cover_letter" placeholder="Tell us why you're a great fit for this role..." style="background: white; color: var(--dark); min-height: 150px;"></textarea>
+                </div>
+                <button type="submit" class="btn" style="background: white; color: #06b6d4; margin-top: 16px;">Submit Application</button>
+            </form>
+        {% endif %}
+    </div>
+
+    <!-- Back Button -->
+    <div style="text-align: center; margin-top: 40px;">
+        <a href="{{ url_for('jobs') }}" class="btn outline">Back to Jobs</a>
+    </div>
+</div>
+{% endblock %}

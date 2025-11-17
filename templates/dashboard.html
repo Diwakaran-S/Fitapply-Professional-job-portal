@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - FitApply{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <h1 style="margin-bottom: 32px;">Your Dashboard</h1>
+
+    <!-- Statistics -->
+    <div class="dashboard-stats">
+        <div class="stat-card">
+            <div class="stat-card-number">{{ total_applications }}</div>
+            <div class="stat-card-label">Total Applications</div>
+        </div>
+        <div class="stat-card pending">
+            <div class="stat-card-number">{{ pending_count }}</div>
+            <div class="stat-card-label">Pending</div>
+        </div>
+        <div class="stat-card accepted">
+            <div class="stat-card-number">{{ accepted_count }}</div>
+            <div class="stat-card-label">Accepted</div>
+        </div>
+        <div class="stat-card rejected">
+            <div class="stat-card-number">{{ rejected_count }}</div>
+            <div class="stat-card-label">Rejected</div>
+        </div>
+    </div>
+
+    <!-- Applications List -->
+    <h2 style="margin-top: 40px; margin-bottom: 20px;">Your Applications</h2>
+
+    {% if applications|length > 0 %}
+        <div class="applications-list">
+            <div class="app-header">
+                <div>Job Title</div>
+                <div>Company</div>
+                <div>Applied On</div>
+                <div>Status</div>
+            </div>
+            {% for app in applications %}
+                <div class="app-item">
+                    <div>
+                        <div class="app-title">{{ app.job_title }}</div>
+                    </div>
+                    <div>
+                        <div class="app-company">{{ app.company }}</div>
+                    </div>
+                    <div>
+                        <div class="app-date">{{ app.applied_at.strftime('%d %b %Y') }}</div>
+                    </div>
+                    <div>
+                        <span class="status-badge {{ app.status }}">
+                            {% if app.status == 'pending' %}
+                                ⏳ Pending
+                            {% elif app.status == 'accepted' %}
+                                ✅ Accepted
+                            {% elif app.status == 'rejected' %}
+                                ❌ Rejected
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-state-icon">📋</div>
+            <h3>No Applications Yet</h3>
+            <p>You haven't applied to any jobs yet. Start exploring and apply for positions that match your skills!</p>
+            <a href="{{ url_for('jobs') }}" class="btn" style="margin-top: 16px;">Browse Jobs</a>
+        </div>
+    {% endif %}
+
+    <!-- Quick Actions -->
+    <div style="margin-top: 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+        <div class="card" style="text-align: center;">
+            <div class="card-icon">🔍</div>
+            <h3>Browse More Jobs</h3>
+            <p>Discover new opportunities tailored to your skills.</p>
+            <a href="{{ url_for('jobs') }}" class="btn" style="margin-top: 12px;">Explore</a>
+        </div>
+        <div class="card" style="text-align: center;">
+            <div class="card-icon">👤</div>
+            <h3>Update Profile</h3>
+            <p>Keep your profile up-to-date to attract better opportunities.</p>
+            <a href="{{ url_for('profile') }}" class="btn" style="margin-top: 12px;">Edit Profile</a>
+        </div>
+        <div class="card" style="text-align: center;">
+            <div class="card-icon">💬</div>
+            <h3>Need Help?</h3>
+            <p>Check out our help section for tips and guidance.</p>
+            <a href="{{ url_for('help') }}" class="btn" style="margin-top: 12px;">Get Help</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

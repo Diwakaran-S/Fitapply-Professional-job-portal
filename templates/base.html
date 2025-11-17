@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}FitApply - Find Your Next Job{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <!-- Header/Navigation -->
+    <header class="topbar">
+        <div class="container">
+            <div class="brand">
+                <a href="{{ url_for('index') }}">💼 FitApply</a>
+            </div>
+            <nav>
+                <a href="{{ url_for('index') }}">Home</a>
+                <a href="{{ url_for('jobs') }}">Jobs</a>
+                {% if 'user_id' in session %}
+                    <a href="{{ url_for('dashboard') }}">Dashboard</a>
+                    <a href="{{ url_for('profile') }}">Profile</a>
+                    <a href="{{ url_for('about') }}">About</a>
+                    <a href="{{ url_for('help') }}">Help</a>
+                    <a href="{{ url_for('logout') }}" class="btn">Logout</a>
+                    <span class="greet">👋 Hi, {{ session.get('user_name') }}</span>
+                {% else %}
+                    <a href="{{ url_for('about') }}">About</a>
+                    <a href="{{ url_for('help') }}">Help</a>
+                    <a href="{{ url_for('signup') }}" class="btn">Sign Up</a>
+                    <a href="{{ url_for('login') }}" class="btn outline">Log In</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <div class="container">
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flashes">
+                        {% for category, message in messages %}
+                            <div class="flash {{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <!-- Page Content -->
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-section">
+                <h4>About FitApply</h4>
+                <p>FitApply is your gateway to finding perfect job opportunities. Connect with top companies and advance your career.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="{{ url_for('index') }}">Home</a></li>
+                    <li><a href="{{ url_for('jobs') }}">Browse Jobs</a></li>
+                    <li><a href="{{ url_for('about') }}">About Us</a></li>
+                    <li><a href="{{ url_for('help') }}">Help & Support</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>For Users</h4>
+                <ul>
+                    {% if 'user_id' in session %}
+                        <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                        <li><a href="{{ url_for('profile') }}">My Profile</a></li>
+                        <li><a href="{{ url_for('jobs') }}">Find Jobs</a></li>
+                    {% else %}
+                        <li><a href="{{ url_for('signup') }}">Sign Up</a></li>
+                        <li><a href="{{ url_for('login') }}">Log In</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 FitApply. All rights reserved. | Build with DKTeck</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Admin - Manage Applications - FitApply{% endblock %}
+
+{% block content %}
+<div style="padding: 40px 0;">
+    <h1 style="margin-bottom: 32px;">📋 Admin Panel - Application Management</h1>
+
+    <div style="background: #fef3c7; padding: 16px; border-radius: 8px; border-left: 4px solid var(--warning); margin-bottom: 32px;">
+        <p style="color: #78350f; margin: 0;"><strong>⚠️ Admin Panel:</strong> Here you can view all applications and update their status.</p>
+    </div>
+
+    {% if applications|length > 0 %}
+        <div class="applications-list">
+            <div class="app-header">
+                <div>Job Title</div>
+                <div>Applicant</div>
+                <div>Email</div>
+                <div>Status</div>
+                <div>Action</div>
+            </div>
+            {% for app in applications %}
+                <div class="app-item" style="display: grid; grid-template-columns: 1fr 1fr 1.5fr 1fr 1fr; gap: 16px; align-items: center;">
+                    <div>
+                        <div class="app-title">{{ app.job_title }}</div>
+                    </div>
+                    <div>
+                        <div class="app-company">{{ app.user_name }}</div>
+                    </div>
+                    <div>
+                        <div style="color: #6b7280; font-size: 0.9rem;">{{ app.user_email }}</div>
+                    </div>
+                    <div>
+                        <span class="status-badge {{ app.status }}">
+                            {% if app.status == 'pending' %}
+                                 Pending
+                            {% elif app.status == 'accepted' %}
+                                Accepted
+                            {% elif app.status == 'rejected' %}
+                                 Rejected
+                            {% endif %}
+                        </span>
+                    </div>
+                    <div>
+                        <form method="POST" action="{{ url_for('update_application_status', app_id=app._id) }}" style="display: flex; gap: 8px;">
+                            <select name="status" style="padding: 6px; border: 1px solid var(--border); border-radius: 4px; font-size: 0.9rem;">
+                                <option value="pending" {% if app.status == 'pending' %}selected{% endif %}>Pending</option>
+                                <option value="accepted" {% if app.status == 'accepted' %}selected{% endif %}>Accept</option>
+                                <option value="rejected" {% if app.status == 'rejected' %}selected{% endif %}>Reject</option>
+                            </select>
+                            <button type="submit" class="btn" style="padding: 6px 12px; font-size: 0.85rem;">Update</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div style="margin-top: 40px; padding: 20px; background: var(--light); border-radius: 8px;">
+            <p style="color: #6b7280; margin: 0;">
+                <strong>Total Applications:</strong> {{ applications|length }}<br>
+                <strong>Pending:</strong> {{ applications|selectattr('status', 'equalto', 'pending')|list|length }}<br>
+                <strong>Accepted:</strong> {{ applications|selectattr('status', 'equalto', 'accepted')|list|length }}<br>
+                <strong>Rejected:</strong> {{ applications|selectattr('status', 'equalto', 'rejected')|list|length }}
+            </p>
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-state-icon">📋</div>
+            <h3>No Applications</h3>
+            <p>There are no applications yet.</p>
+        </div>
+    {% endif %}
+
+    <div style="margin-top: 40px; text-align: center;">
+        <a href="{{ url_for('index') }}" class="btn outline">Back to Home</a>
+    </div>
+</div>
+{% endblock %}

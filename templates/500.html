@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Server Error - FitApply{% endblock %}
+
+{% block content %}
+<div class="empty-state" style="padding: 80px 20px;">
+    <div class="empty-state-icon">⚠️</div>
+    <h3 style="font-size: 1.8rem;">Server Error</h3>
+    <p>Something went wrong on our end. Our team has been notified and is working to fix it.</p>
+    <div style="margin-top: 24px;">
+        <a href="{{ url_for('index') }}" class="btn">Go Home</a>
+        <a href="{{ url_for('help') }}" class="btn outline">Get Help</a>
+    </div>
+</div>
+{% endblock %}

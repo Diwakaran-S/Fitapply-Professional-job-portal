@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Seed Sample Jobs - FitApply Admin{% endblock %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 60px auto; text-align: center;">
+    <div class="card">
+        <h1 style="margin-bottom: 16px;">🌱 Seed Sample Jobs</h1>
+        <p style="color: #6b7280; margin-bottom: 24px;">Load 18 sample job listings into the database for testing. This is a demo admin feature.</p>
+        
+        <div style="background: var(--light); padding: 20px; border-radius: 8px; margin-bottom: 24px; border-left: 4px solid var(--info);">
+            <p style="text-align: left; margin: 0;">
+                <strong>ℹ️ Info:</strong><br>
+                This will:
+                <ul style="text-align: left; margin-top: 8px;">
+                    <li>Delete all existing jobs</li>
+                    <li>Insert 18 new sample jobs</li>
+                    <li>Cover various job categories</li>
+                </ul>
+            </p>
+        </div>
+
+        <form method="POST" action="{{ url_for('seed_jobs') }}">
+            <button type="submit" class="btn" style="width: 100%; margin-bottom: 12px;" onclick="return confirm('This will delete all existing jobs. Continue?')">
+                ✅ Seed Jobs
+            </button>
+        </form>
+
+        <a href="{{ url_for('jobs') }}" class="btn outline" style="width: 100%;">Back to Jobs</a>
+    </div>
+</div>
+{% endblock %}
